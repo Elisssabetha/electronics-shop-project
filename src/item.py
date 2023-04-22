@@ -1,3 +1,9 @@
+import csv
+import os.path
+
+PATH = os.path.join('..', 'src', 'items.csv')
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -13,10 +19,29 @@ class Item:
         :param price: Цена за единицу товара.
         :param quantity: Количество товара в магазине.
         """
-        self.name = name
+        self.__name = name
         self.price = price
         self.quantity = quantity
         Item.all.append(self)
+
+    @property
+    def name(self):
+        return self.__name
+
+    @name.setter
+    def name(self, name):
+        if len(name) < 10:
+            self.__name = name
+        else:
+            print("слишком длинное название")
+
+    @classmethod
+    def instantiate_from_csv(cls):
+        with open(PATH, encoding='Windows-1251') as csvfile:
+            reader = csv.DictReader(csvfile)
+            for item in reader:
+                if len(item['name']) < 10:
+                    cls(item['name'], item['price'], item['quantity'])
 
 
 
@@ -33,3 +58,7 @@ class Item:
         Применяет установленную скидку для конкретного товара.
         """
         self.price = self.price * Item.pay_rate
+
+    @staticmethod
+    def string_to_number(number):
+        return int(float(number))
