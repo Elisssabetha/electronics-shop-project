@@ -2,6 +2,7 @@
 import pytest
 
 from src.item import Item
+from src.phone import Phone
 
 
 @pytest.fixture
@@ -20,11 +21,13 @@ def test_string_to_number():
 
 
 def test_name():
-    class_example_fixture.name = 'Смартфон'
-    assert class_example_fixture.name == 'Смартфон'
-
-    # with pytest.raises(ValueError):
-    #     class_example_fixture.name = 'суперсмартфон'
+    item1 = Item('Монитор', 15000, 6)
+    item1.name = 'Смартфон'
+    assert item1.name == 'Смартфон'
+    # item1.name = 'суперСмартфон'
+    # assert item1.name == 'суперСмартфон'
+    with pytest.raises(ValueError):
+        item1.name = 'суперсмартфон'
 
 
 def test_repr():
@@ -37,3 +40,11 @@ def test_str():
     assert str(item1) == 'Монитор'
 
 
+def test_add():
+    item1 = Item("Смартфон", 10000, 20)
+    phone1 = Phone("iPhone 14", 120_000, 5, 2)
+    assert item1 + phone1 == 25
+    assert phone1 + phone1 == 10
+
+    with pytest.raises(AttributeError):
+        var = item1 + 5 == 25

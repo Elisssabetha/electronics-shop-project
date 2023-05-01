@@ -49,8 +49,6 @@ class Item:
                 if len(item['name']) < 10:
                     cls(item['name'], item['price'], item['quantity'])
 
-
-
     def calculate_total_price(self) -> float:
         """
         Рассчитывает общую стоимость конкретного товара в магазине.
@@ -68,3 +66,9 @@ class Item:
     @staticmethod
     def string_to_number(number):
         return int(float(number))
+
+    def __add__(self, other):
+        if issubclass(other.__class__, self.__class__):
+            return self.quantity + other.quantity
+        else:
+            raise AttributeError
