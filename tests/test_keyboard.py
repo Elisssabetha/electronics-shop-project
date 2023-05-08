@@ -15,9 +15,8 @@ def test_change_lang():
     kb.change_lang()
     assert kb.language == 'RU'
 
-
-with pytest.raises(AttributeError):
-    kb.language = 'DE'
+    with pytest.raises(AttributeError):
+        kb.language = 'DE'
 
 
 
