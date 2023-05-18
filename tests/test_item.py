@@ -1,4 +1,7 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
+import csv
+import os
+
 import pytest
 
 from src.item import Item
@@ -48,3 +51,12 @@ def test_add():
 
     with pytest.raises(AttributeError):
         var = item1 + 5 == 25
+
+
+def test_instantiate_from_csv():
+    file = os.path.join('..', 'src', 'itms.csv')
+    with pytest.raises(FileNotFoundError):
+        with open(file, encoding='Windows-1251') as csvfile:
+            reader = csv.DictReader(csvfile)
+
+

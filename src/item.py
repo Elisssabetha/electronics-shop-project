@@ -4,6 +4,10 @@ import os.path
 PATH = os.path.join('..', 'src', 'items.csv')
 
 
+class InstantiateCSVError(Exception):
+    pass
+
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -44,11 +48,18 @@ class Item:
 
     @classmethod
     def instantiate_from_csv(cls):
-        with open(PATH, encoding='Windows-1251') as csvfile:
-            reader = csv.DictReader(csvfile)
-            for item in reader:
-                if len(item['name']) < 10:
-                    cls(item['name'], item['price'], item['quantity'])
+        try:
+            with open(PATH, encoding='Windows-1251') as csvfile:
+                reader = csv.DictReader(csvfile)
+                if len(list(csv.reader(csvfile))[0]) != 3:
+                    raise InstantiateCSVError(f'Файл {PATH} поврежден')
+                for item in reader:
+                    if len(item['name']) < 10:
+                        cls(item['name'], item['price'], item['quantity'])
+        except FileNotFoundError:
+            raise FileNotFoundError(f'Отсутствует файл {PATH}')
+            # print(f'Отсутствует файл {PATH}')
+
 
     def calculate_total_price(self) -> float:
         """
